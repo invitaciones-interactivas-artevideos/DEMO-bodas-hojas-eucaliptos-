@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda - Jonatan & Brenda</title>
+    <!-- Fuentes de Google idénticas a las del video -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #E6EBE6; /* Color de fondo fuera del celular (verde muy claro) */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Pantalla del celular */
+        .phone-screen {
+            background-color: #FFFFFF; /* Fondo BLANCO para que la foto de las flores se fusione perfecto */
+            width: 100%;
+            max-width: 420px;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            padding-bottom: 50px;
+            color: #2E4032; /* Verde oscuro para los textos */
+        }
+
+        /* Diseño floral superior */
+        .floral-top {
+            width: 100%;
+            height: 250px;
+            background-image: url('flores.png'); 
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+        }
+
+        /* Reproductor de música (idéntico a la ubicación del video) */
+        .audio-container {
+            margin: -20px 0 30px 0;
+            font-size: 0.75em;
+            color: #777;
+        }
+        .audio-container p { margin-bottom: 5px; }
+        audio {
+            height: 35px;
+            width: 220px;
+        }
+
+        /* Nombres y Subtítulo */
+        .names {
+            font-family: 'Cinzel', serif;
+            font-size: 2.3em;
+            margin: 0;
+            line-height: 1.2;
+            color: #2E4032;
+        }
+        .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9em;
+            letter-spacing: 5px;
+            text-transform: lowercase;
+            margin: 10px 0 30px 0;
+            color: #777;
+        }
+
+        /* Mensaje Intro */
+        .intro h3 {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        .intro p {
+            font-size: 0.85em;
+            margin: 0 auto;
+            width: 80%;
+            line-height: 1.5;
+            color: #444;
+            font-style: italic;
+        }
+
+        /* Sección de Fecha (Exactamente igual al video) */
+        .date-section {
+            margin: 30px auto;
+            width: 65%;
+        }
+        .month {
+            font-size: 0.8em;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .day-year {
+            border-top: 1px solid #2E4032;
+            border-bottom: 1px solid #2E4032;
+            padding: 10px 0;
+            font-size: 0.85em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            letter-spacing: 1px;
+        }
+        .day-year span { font-weight: 500; }
+        .day-year .big-day {
+            font-size: 2.2em;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Cuenta Regresiva */
+        .countdown {
+            margin: 30px 0;
+        }
+        .countdown-title {
+            font-size: 0.7em;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .time {
+            font-size: 1.3em;
+            letter-spacing: 4px;
+            font-weight: 300;
+        }
+
+        /* Tarjetas Verdes con borde interior */
+        .card {
+            background-color: #E2E7E2; /* Tonalidad verde salvia */
+            margin: 20px;
+            padding: 30px 20px;
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        /* Borde interior sutil de las tarjetas */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 6px; left: 6px; right: 6px; bottom: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+        }
+
+        .card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1em;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            letter-spacing: 1.5px;
+        }
+        .card p {
+            font-size: 0.85em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        /* Iconos de las tarjetas */
+        .icon-img {
+            width: 35px;
+            margin-bottom: 5px;
+        }
+
+        /* Botones (Blancos con borde verde oscuro) */
+        .btn {
+            display: inline-block;
+            background-color: #FFFFFF;
+            color: #2E4032;
+            text-decoration: none;
+            padding: 12px 25px;
+            font-size: 0.75em;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: 1px solid #2E4032;
+            transition: 0.3s;
+            position: relative;
+            z-index: 2; /* Para que sea clickeable por encima del borde blanco */
+        }
+        .btn:hover {
+            background-color: #2E4032;
+            color: #FFFFFF;
+        }
+
+        /* Galería de 6 fotos (Requisito) */
+        .gallery-container {
+            margin: 20px;
+        }
+        .gallery-container h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            letter-spacing: 1.5px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .gallery img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        /* Flor inferior invertida */
+        .floral-bottom {
+            width: 100%;
+            height: 150px;
+            background-image: url('flores.png');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            transform: scaleY(-1); /* Voltea la imagen boca abajo */
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-screen">
+        
+        <!-- Diseño floral superior -->
+        <div class="floral-top"></div>
+
+        <!-- Audio -->
+        <div class="audio-container">
+            <p>Da play para escuchar nuestra canción</p>
+            <audio controls loop>
+                <source src="musica.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+
+        <!-- Nombres -->
+        <h1 class="names">JONATAN<br>& BRENDA</h1>
+        <h2 class="subtitle">nuestra boda</h2>
+
+        <!-- Introducción -->
+        <div class="intro">
+            <h3>¡NOS CASAMOS!</h3>
+            <p>Nos encantaría que seas parte de este momento tan especial para nosotros</p>
+        </div>
+
+        <!-- Fecha estructurada -->
+        <div class="date-section">
+            <div class="month">MARZO</div>
+            <div class="day-year">
+                <span>SÁBADO</span>
+                <span class="big-day">14</span>
+                <span>2026</span>
+            </div>
+        </div>
+
+        <!-- Reloj de Cuenta Regresiva (Funcional) -->
+        <div class="countdown">
+            <div class="countdown-title">FALTAN...</div>
+            <div class="time" id="timer">00 : 00 : 00 : 00</div>
+        </div>
+
+        <!-- Poema / Mensaje -->
+        <div class="card">
+            <p style="font-style: italic; font-size: 0.9em; margin-bottom: 0;">"Todo tiene su tiempo, y todo lo que se quiere debajo del cielo tiene su hora.<br>Creímos, esperamos... y en nuestro tiempo, Dios hizo eterno nuestro amor en nuestros corazones"</p>
+        </div>
+
+        <!-- Ceremonia -->
+        <div class="card">
+            <h3 style="margin-top: 0;">🤍<br><br>CEREMONIA</h3>
+            <p><strong>El Campito Eventos</strong><br>18:00 hs</p>
+            <a href="#" class="btn">VER UBICACIÓN</a>
+        </div>
+
+        <!-- Fiesta -->
+        <div class="card">
+            <h3 style="margin-top: 0;">🥂<br><br>FIESTA</h3>
+            <p><strong>El Campito Eventos</strong><br>19:30 hs</p>
+            <a href="#" class="btn">VER UBICACIÓN</a>
+        </div>
+
+        <!-- Galería (Fondo blanco natural) -->
+        <div class="gallery-container">
+            <h3>NUESTROS MOMENTOS</h3>
+            <div class="gallery">
+                <img src="foto1.jpg" alt="Foto 1">
+                <img src="foto2.jpg" alt="Foto 2">
+                <img src="foto3.jpg" alt="Foto 3">
+                <img src="foto4.jpg" alt="Foto 4">
+                <img src="foto5.jpg" alt="Foto 5">
+                <img src="foto6.jpg" alt="Foto 6">
+            </div>
+        </div>
+
+        <!-- Canciones -->
+        <div class="card">
+            <h3 style="margin-top: 0;">🎵<br><br>MÚSICA</h3>
+            <p>¡Ayúdanos a armar la playlist de la fiesta y sugiérenos qué canciones no pueden faltar!</p>
+            <a href="#" class="btn">SUGERIR CANCIÓN</a>
+        </div>
+
+        <!-- Álbum Compartido -->
+        <div class="card">
+            <h3 style="margin-top: 0;">📸<br><br>ÁLBUM COMPARTIDO</h3>
+            <p>Comparte con nosotros las fotos y videos que tomes ese día. ¡Queremos recordar cada momento!</p>
+            <a href="#" class="btn">SUBIR FOTOS</a>
+        </div>
+
+        <!-- Dress Code -->
+        <div class="card">
+            <h3 style="margin-top: 0;">💎<br><br>DRESS CODE</h3>
+            <p style="font-size: 1.1em; margin-bottom: 0;">Elegante Sport</p>
+        </div>
+
+        <!-- El Regalo -->
+        <div class="card">
+            <h3 style="margin-top: 0;">🎁<br><br>EL REGALO</h3>
+            <p>Tu presencia es nuestro mejor regalo, pero si querés tener un detalle con nosotros, vamos a estar más que agradecidos.</p>
+            <a href="#" class="btn">MÁS INFO ACÁ</a>
+        </div>
+
+        <!-- Confirmación -->
+        <div class="card">
+            <h3 style="margin-top: 0;">✉️<br><br>CONFIRMACIÓN DE<br>ASISTENCIA</h3>
+            <p>Para garantizar la comodidad de todos nuestros invitados, agradecemos respetar el número de personas asignadas.<br><br>Te pedimos que confirmes tu asistencia antes del 1 de marzo (sin excepción).<br><br>Muchas gracias</p>
+            <a href="#" class="btn">CONFIRMAR ACÁ</a>
+        </div>
+
+        <!-- Diseño floral inferior -->
+        <div class="floral-bottom"></div>
+
+    </div>
+
+    <!-- Código Javascript para que la cuenta regresiva funcione de verdad -->
+    <script>
+        var countDownDate = new Date("Mar 14, 2026 18:00:00").getTime();
+        
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            days = days < 10 ? "0" + days : days;
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            document.getElementById("timer").innerHTML = days + " : " + hours + " : " + minutes + " : " + seconds;
+            
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("timer").innerHTML = "¡HOY ES EL GRAN DÍA!";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
