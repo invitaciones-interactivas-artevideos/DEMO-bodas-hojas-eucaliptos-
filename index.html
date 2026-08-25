@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda - Jonatan & Brenda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #E6EBE6; margin: 0; padding: 0; display: flex; justify-content: center; }
+        .phone-screen { background-color: #FFFFFF; width: 100%; max-width: 420px; min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.1); text-align: center; position: relative; padding-bottom: 50px; color: #2E4032; }
+        .floral-top { width: 100%; height: 250px; background-image: url('flores.png'); background-size: cover; background-position: center bottom; background-repeat: no-repeat; }
+        
+        .audio-container { margin: -20px 0 30px 0; font-size: 0.75em; color: #777; }
+        .audio-container p { margin-bottom: 5px; }
+        audio { height: 35px; width: 220px; }
+        
+        .names { font-family: 'Cinzel', serif; font-size: 2.3em; margin: 0; line-height: 1.2; color: #2E4032; }
+        .subtitle { font-family: 'Montserrat', sans-serif; font-size: 0.9em; letter-spacing: 5px; text-transform: lowercase; margin: 10px 0 30px 0; color: #777; }
+
+        /* Fecha centrada perfectamente */
+        .date-section { margin: 40px auto; width: 80%; }
+        .month { font-size: 0.85em; letter-spacing: 4px; margin-bottom: 10px; text-transform: uppercase; font-weight: 500; }
+        .date-table { width: 100%; border-top: 1px solid #2E4032; border-bottom: 1px solid #2E4032; padding: 12px 0; border-collapse: collapse; }
+        .date-table td { text-align: center; vertical-align: middle; }
+        .day-name { font-size: 0.8em; letter-spacing: 1px; font-weight: 500; width: 30%; }
+        .big-day { font-size: 2.5em; font-family: 'Cinzel', serif; width: 40%; }
+        .year { font-size: 0.85em; letter-spacing: 1px; font-weight: 500; width: 30%; }
+
+        /* Cuenta regresiva estilizada y espaciada */
+        .countdown { margin: 45px 0 30px 0; }
+        .countdown-title { font-size: 0.75em; letter-spacing: 3px; margin-bottom: 15px; color: #555; font-weight: 500; }
+        .time-container { display: flex; justify-content: center; gap: 15px; }
+        .time-box { display: flex; flex-direction: column; align-items: center; min-width: 55px; }
+        .time-number { font-size: 1.6em; font-weight: 300; letter-spacing: 1px; }
+        .time-label { font-size: 0.65em; text-transform: uppercase; letter-spacing: 1px; color: #777; margin-top: 4px; }
+
+        .card { background-color: #E2E7E2; margin: 25px 20px; padding: 30px 20px; border-radius: 2px; position: relative; }
+        .card::before { content: ''; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px; border: 1px solid rgba(255, 255, 255, 0.8); pointer-events: none; }
+        
+        /* Aplicamos el mismo estilo de encabezado a las cards y a la galería para los iconos */
+        .card h3, .gallery-container h3 { font-family: 'Cinzel', serif; font-size: 1.1em; margin-top: 10px; margin-bottom: 15px; letter-spacing: 1.5px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .card p { font-size: 0.85em; line-height: 1.6; margin-bottom: 20px; }
+        
+        .btn { display: inline-block; background-color: #FFFFFF; color: #2E4032; text-decoration: none; padding: 12px 25px; font-size: 0.75em; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; border: 1px solid #2E4032; transition: 0.3s; position: relative; z-index: 2; }
+        .btn:hover { background-color: #2E4032; color: #FFFFFF; }
+        
+        .gallery-container { margin: 30px 20px; }
+        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .gallery img { width: 100%; height: 160px; object-fit: cover; border-radius: 4px; cursor: pointer; transition: transform 0.2s; }
+        .gallery img:hover { transform: scale(1.02); }
+
+        .closing-text { font-family: 'Cinzel', serif; font-size: 1.3em; color: #2E4032; margin: 40px 0 20px 0; letter-spacing: 2px; }
+        .floral-bottom { width: 100%; height: 150px; background-image: url('flores.png'); background-size: cover; background-position: center top; background-repeat: no-repeat; transform: scaleY(-1); margin-top: 20px; }
+
+        /* Estilos del Modal para agrandar fotos */
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
+        .modal.show { display: flex; }
+        .modal-content { max-width: 90%; max-height: 85vh; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: contain; }
+        .close-modal { position: absolute; top: 20px; right: 25px; color: #fff; font-size: 35px; font-weight: bold; cursor: pointer; z-index: 10000; }
+    </style>
+</head>
+<body>
+
+    <!-- Panel de configuración rápida -->
+    <script>
+        const CONFIG = {
+            mostrarPlaylist: true,
+            mostrarAlbum: true
+        };
+    </script>
+
+    <div class="phone-screen">
+        <div class="floral-top"></div>
+
+        <div class="audio-container">
+            <p>Da play para escuchar nuestra canción</p>
+            <audio controls loop>
+                <source src="musica.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+
+        <h1 class="names">JONATAN<br>& BRENDA</h1>
+        <h2 class="subtitle">nuestra boda</h2>
+
+        <!-- Fecha centrada exactamente -->
+        <div class="date-section">
+            <div class="month">DICIEMBRE</div>
+            <table class="date-table">
+                <tr>
+                    <td class="day-name">SÁBADO</td>
+                    <td class="big-day">12</td>
+                    <td class="year">2026</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Cuenta regresiva grande y detallada -->
+        <div class="countdown">
+            <div class="countdown-title">FALTAN...</div>
+            <div class="time-container">
+                <div class="time-box">
+                    <span class="time-number" id="days">00</span>
+                    <span class="time-label">días</span>
+                </div>
+                <span class="time-number">:</span>
+                <div class="time-box">
+                    <span class="time-number" id="hours">00</span>
+                    <span class="time-label">hs</span>
+                </div>
+                <span class="time-number">:</span>
+                <div class="time-box">
+                    <span class="time-number" id="minutes">00</span>
+                    <span class="time-label">min</span>
+                </div>
+                <span class="time-number">:</span>
+                <div class="time-box">
+                    <span class="time-number" id="seconds">00</span>
+                    <span class="time-label">seg</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje de inicio con ícono animado nuevo -->
+        <div class="card">
+            <h3>
+                <lord-icon src="https://cdn.lordicon.com/pnhskdsq.json" trigger="loop" delay="1500" colors="primary:#2E4032" style="width:45px;height:45px"></lord-icon>
+                ¡NOS CASAMOS!
+            </h3>
+            <p>Nos hemos dicho mutuamente... ¡sí! Así que esperamos que tú también lo hagas y te sumes a la gran fiesta del amor que estamos preparando. No esperes mucho... ¡y confirma lo antes que puedas!</p>
+        </div>
+
+        <!-- Ceremonia -->
+        <div class="card">
+            <h3>
+                <lord-icon src="https://cdn.lordicon.com/xryjrepg.json" trigger="loop" delay="1500" colors="primary:#2E4032" style="width:45px;height:45px"></lord-icon>
+                CEREMONIA
+            </h3>
+            <p><strong>El Campito Eventos</strong><br>18:00 hs</p>
+            <a href="#" class="btn">VER UBICACIÓN</a>
+        </div>
+
+        <!-- Fiesta -->
+        <div class="card">
+            <h3>
+                <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" delay="1500" colors="primary:#2E4032" style="width:45px;height:45px"></lord-icon>
+                FIESTA
+            </h3>
+            <p><strong>El Campito Eventos</strong><br>19:30 hs</p>
+            <a href="#" class="btn">VER UBICACIÓN</a>
+        </div>
+
+        <!-- Galería de 6 fotos con ícono animado nuevo -->
+        <div class="gallery-container">
+            <h3>
+                <lord-icon src="https://cdn.lordicon.com/vixtkkzv.json" trigger="loop" delay="1500" colors="primary:#2E4032" style="width:45px;height:45px"></lord-icon>
+                NUESTROS MOMENTOS
+            </h3>
+            <div class="gallery">
+                <img src="foto1.jpg" alt="Foto 1">
+                <img src="foto2.jpg" alt="Foto 2">
+                <img src="foto3.jpg" alt="Foto 3">
+                <img src="foto4.jpg" alt="Foto 4">
+                <img src="foto5.jpg" alt="Foto 5">
+                <img src="foto6.jpg" alt="Foto 6">
+            </div>
+        </div>
+
+        <!-- Sección Playlist (Condicional por JS) -->
+        <div class="card" id="section-playlist" style="display: none;">
+            <h3>
+                <lord-icon src="https://cdn.lordicon.com/music.json" trigger="loop" delay="1500" colors="primary:#2E4032" style="width:45px;height:45px"></lord-icon>
+                MÚSICA / PLAYLIST
+            </h3>
+            <p>¿Qué canción no puede faltar en la fiesta? Sugiérinos tus temas favoritos para bailar.</p>
+            <a href="URL_FORMULARIO_PLAYLIST" class="btn">SUGERIR CANCIÓN</a>
+        </div>
+
+        <!-- Sección Álbum Compartido (Condicional por JS) -->
+        <div class="card" id="section-album" style="display: none;">
+            <h3>
+                <lord-icon src="https://cdn.lordicon.com/photo.json" trigger="loop" delay="1500" colors="primary:#2E4032" style="width:45px;height:45px"></lord-icon>
+                ÁLBUM DE FOTOS
+            </h3>
+            <p>Sube y comparte las fotos y videos que vayas tomando durante el evento.</p>
+            <a href="URL_FORMULARIO_ALBUM" class="btn">SUBIR AL ÁLBUM</a>
+        </div>
+
+        <!-- Dress Code -->
+        <div class="card">
+            <h3>
+                <lord-icon src="https://cdn.lordicon.com/xhebrhsj.json" trigger="loop" delay="1500" colors="primary:#2E4032" style="width:45px;height:45px"></lord-icon>
+                DRESS CODE
+            </h3>
+            <p style="font-size: 1.1em; margin-bottom: 0;">Elegante Sport</p>
+        </div>
+
+        <!-- El Regalo -->
+        <div class="card">
+            <h3>
+                <lord-icon src="https://cdn.lordicon.com/redekkxt.json" trigger="loop" delay="1500" colors="primary:#2E4032" style="width:45px;height:45px"></lord-icon>
+                EL REGALO
+            </h3>
+            <p>Tu presencia es nuestro mejor regalo, pero si querés tener un detalle con nosotros, vamos a estar más que agradecidos.</p>
+            <a href="#" class="btn">MÁS INFO ACÁ</a>
+        </div>
+
+        <!-- Confirmación -->
+        <div class="card">
+            <h3>
+                <lord-icon src="https://cdn.lordicon.com/diihvcfp.json" trigger="loop" delay="1500" colors="primary:#2E4032" style="width:45px;height:45px"></lord-icon>
+                CONFIRMACIÓN
+            </h3>
+            <p>Para garantizar la comodidad de todos nuestros invitados, agradecemos respetar el número de personas asignadas.<br><br>Te pedimos que confirmes tu asistencia antes del 1 de diciembre.</p>
+            <a href="#" class="btn">CONFIRMAR ACÁ</a>
+        </div>
+
+        <!-- Cierre solicitado -->
+        <div class="closing-text">¡No faltes!</div>
+
+        <div class="floral-bottom"></div>
+    </div>
+
+    <!-- Contenedor del Modal para agrandar fotos -->
+    <div id="photoModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="expandedImg">
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script>
+        // Mostrar u ocultar secciones según la configuración
+        if (CONFIG.mostrarPlaylist) {
+            document.getElementById('section-playlist').style.display = 'block';
+        }
+        if (CONFIG.mostrarAlbum) {
+            document.getElementById('section-album').style.display = 'block';
+        }
+
+        // Reloj de cuenta regresiva
+        var countDownDate = new Date("Dec 12, 2026 18:00:00").getTime();
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+            
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
+            }
+        }, 1000);
+
+        // --- LÓGICA DEL MODAL DE FOTOS Y BOTÓN ATRÁS ---
+        const modal = document.getElementById("photoModal");
+        const modalImg = document.getElementById("expandedImg");
+        const galleryImages = document.querySelectorAll(".gallery img");
+        const closeModalBtn = document.querySelector(".close-modal");
+
+        // Al tocar una imagen, la agrandamos y creamos un estado en el historial
+        galleryImages.forEach(img => {
+            img.addEventListener("click", function() {
+                modalImg.src = this.src;
+                modal.classList.add("show");
+                // Manipulamos el historial para que el botón atrás no cierre la app web
+                history.pushState({ modalOpen: true }, "", "#foto");
+            });
+        });
+
+        // Función general para cerrar el modal
+        function closeModal() {
+            if (modal.classList.contains("show")) {
+                modal.classList.remove("show");
+            }
+        }
+
+        // Al tocar la X cerramos y forzamos el retroceso del historial para limpiar el "#foto"
+        closeModalBtn.addEventListener("click", function() {
+            history.back(); 
+        });
+
+        // Cerrar tocando cualquier parte del fondo oscuro
+        modal.addEventListener("click", function(e) {
+            if (e.target === modal) {
+                history.back();
+            }
+        });
+
+        // Detectamos cuando el usuario usa el botón "atrás" del teléfono o navegador
+        window.addEventListener("popstate", function(event) {
+            closeModal();
+        });
+    </script>
+</body>
+</html>
